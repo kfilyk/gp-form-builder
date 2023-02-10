@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8" />
+
+        <script type="text/javascript" src="../node_modules/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="../node_modules/jquery-ui/dist/jquery-ui.min.js"></script>
+
+        <script src="../main.js"></script>
+
+        <link rel="stylesheet" href="index.css">
+        <link href='https://fonts.googleapis.com/css?family=Hanken Grotesk' rel='stylesheet'>
+        <title>GP FormBuilder</title>
+    </head>
+    <body onload="initDocument()">
+
+        <div id="parameters">
+            <button id="pdf-button"><img width="20px" src="./images/download.png" ></button>
+            <button id="upload-button"><img width="20px" src="./images/upload.png"></button>
+            <button id="save-button" onclick="saveForm()"><img width="20px" src="./images/diskette.png" ></button>
+            <input id="upload-input" type="file" name="filename" style="display: none;"/>
+
+            <select id="type-selector">
+                <option value="" hidden selected>Select Type...</option>
+                <option value="GEOTECHNICAL MEMORANDUM">Geotechnical Memorandum</option>
+                <option value="TRANSMITTAL">Transmittal</option>
+                <option value="PROPOSAL">Proposal</option>
+                <option value="RISK ASSESSMENT">Risk Assessment</option>
+
+            </select>
+
+        </div>
+
+        <table id="memo">
+            <tr id="header">
+                <td colspan="50%">                
+                    <img id="logo" src="./images/geopacific_logo.png">
+                </td>
+                <td colspan="50%" style="text-align:right;">
+                    <select id="location-selector" style="text-align:right;">
+                        <option value="" hidden selected>Select Location...</option>
+                        <option value="(604)-439-0922 <br>geopacific.ca <br>1779 West Avenue Vancouver<br>Vancouver, B.C. V6P 6P2">Vancouver</option>
+                        <option value="(604)-439-0922 <br>geopacific.ca <br>2nd Floor, 3351 Douglas Street<br>Victoria, B.C. V8Z 3L4">Victoria</option>
+                        <option value="(604)-439-0922 <br>geopacific.ca <br>6957 48th Street S.E.<br>Calgary, AB T2C 5A4">Calgary</option>
+                        <option value="(604)-439-0922 <br>geopacific.ca <br>1340 St. Paul Street<br>Kelowna, B.C. V1S 1A7">Kelowna</option>
+                        <option value="(604)-439-0922 <br>geopacific.ca <br>#6 - 2045 West Trans-Canada Highway<br>Kamloops, B.C. V15 1A7">Kamloops</option>
+                        <option value="(604)-439-0922 <br>geopacific.ca <br>661 Natoma Street<br>San Francisco, CA 94103">San Francisco</option>
+                    </select>
+        
+                    <div id="location"></div>
+                </td>
+            </tr>
+
+            <tr id="proposal-header">
+                <td id="client" colspan="50%">                
+                    <div contenteditable id="client-company-name" placeholder="Client Company Name"></div>
+                    <div contenteditable id="client-project" placeholder="Project"></div>
+                    <div contenteditable id="client-address" placeholder="Address"></div>
+                    <div contenteditable id="client-city" placeholder="City, Province/State"></div>
+                    <div contenteditable id="client-postal-code" placeholder="Postal Code"></div>
+                    </br>
+                    <div contenteditable id="client-name" placeholder="Attention: Client Name"></div>
+                </td>
+                <td id="file" colspan="50%">      
+                    <div contenteditable id='date'></div>
+                    <div contenteditable id='file-number'>FILE#:</div>
+                    <div contenteditable id='file-prp'>PRP#:</div>
+                    <div contenteditable id='file-co'>CO#:</div>
+                    <div contenteditable id='file-r'>R0</div>
+                    <div contenteditable id='file-memo'>MEMO#: </div>
+                </td>
+            </tr>
+
+            <tr><td colspan="100%" id="proposal-title"></td></tr>
+        </table>
+
+        <select id="insert-selector">
+            <option value="" selected hidden>+</option>
+            <option value="image">Image</option>
+            <option value="section">Section</option>
+            <option value="table">Table</option>
+            <option value="signature">Signature</option>
+
+        </select>
+
+        <div id="footer">
+            <table id="review-container">
+                <tr>
+                    <td>Reviewed By <input/></td>
+                    <td>Prepared By <input/></td>
+                </tr>
+                <tr>
+                    <td>Signed:<br/><br/><br/><br/><br/></td>
+                    <td>Signed:<br/><br/><br/><br/><br/></td>
+                </tr>
+                <tr>
+                    <td colspan="100%" id="footer-label" style="text-align:center;"> CONSULTING GEOTECHNICAL ENGINEERS</td>
+                </tr>
+            </table>
+        </div>
+    </body>
+    <script src="./index.js"></script>
+</html>
