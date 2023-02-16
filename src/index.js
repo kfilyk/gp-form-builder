@@ -1,7 +1,9 @@
 var sections = 0;
+var selections = 0;
 var images = 0;
 var tables = 0;
 var signatures = 0;
+var remarks = 0;
 var review_footer = false;
 
 
@@ -15,6 +17,10 @@ $('#insert-selector').change(function(event) {
         insertSection()
     } else if(val == "signature"){
         insertSignature()
+    } else if(val == "remark"){
+        insertRemark("")
+    }else if(val == "selection"){
+        insertSelection()
     }
 
     $('#insert-selector').prop('selectedIndex', 0); // reset the insertion selector
@@ -29,16 +35,21 @@ $('#type-selector').change(function(event) {
 
     // reset counts
     sections = 0;
+    selections = 0;
     images = 0;
     tables = 0; 
     signatures = 0;
+    remarks = 0;
+
     review_footer = false;
 
     // remove all sections, images, tables
     $('.section-container').remove() 
+    $('.selection-container').remove() 
     $('.image-container').remove()
     $('.table-container').remove()
     $('.review-container').remove()
+    $('.remark-container').remove()
 
 
     if($('#type-selector').val() == "PROPOSAL") {
@@ -47,22 +58,165 @@ $('#type-selector').change(function(event) {
         $('#file-r').css({"display": "block"});
         $('#file-co').css({"display": "block"});
         $('#file-prp').css({"display": "block"});
-        $('#client-name').css({"display": "block"});
         $('#file-memo').hide();
+        $('#client-name').css({"display": "block"});
+        $('#client-project-manager').hide();
         $('#client-project').hide();
+        $('#risk-professional').hide();
+        $('#risk-firm').hide();
+        $('#risk-practice-number').hide();
+
         $('#review-container').hide();
+
 
     } else if($('#type-selector').val() == "GEOTECHNICAL MEMORANDUM") {
         $('#proposal-header').css({"display": "table-row"});
         $('#proposal-title').html($('#type-selector').val());
+
         $('#client-project').css({"display": "block"});
+        $('#client-project-manager').hide();
+        $('#client-name').hide();
         $('#file-memo').css({"display": "block"});
         $('#file-r').hide();
         $('#file-co').hide();
         $('#file-prp').hide();
-        $('#client-name').hide();
+        $('#risk-professional').hide();
+        $('#risk-firm').hide();
+        $('#risk-practice-number').hide();
         $('#review-container').css({"display": "table"});
-        insertMemorandum()
+
+        // insert memo containers
+        insertTable();
+        $("#t0").val("PURPOSE")
+        //console.log($("#t0 .row-0").children().toArray())
+        $("#t0 .row-0").children('th:nth-child(1)').html("TIME")
+        $("#t0 .row-0").children('th:nth-child(2)').html("WEATHER")
+        $("#t0 .row-0").children('th:nth-child(3)').html("MACHINERY/EQUIPTMENT ADJACENT TO EXCAVATION")
+    
+        insertSection();
+        $("#sh0").val("PURPOSE")
+        insertSection();
+        $("#sh1").val("OBSERVATIONS")
+        insertSection();
+        $("#sh2").val("CONCLUSIONS & RECOMMENDATIONS")
+        insertImage();
+    
+    } else if($('#type-selector').val() == "RISK ASSESSMENT") {
+        $('#client-name').hide();
+        $('#file-number').hide();
+        $('#file-memo').hide();
+        $('#file-r').hide();
+        $('#file-co').hide();
+        $('#file-prp').hide();
+        $('#risk-professional').css({"display": "block"});
+        $('#risk-firm').css({"display": "block"});
+        $('#risk-practice-number').css({"display": "block"});
+
+        $('#proposal-header').css({"display": "table-row"});
+        $('#proposal-title').html(`
+            <div contenteditable style="text-align: center;">
+                <select style="-webkit-appearance: none; font-weight:bold" id="risk-selector">
+                    <option>PROJECT-SPECIFIC</option>
+                    <option>GLOBAL</option>
+                    <option>ITERATIVE</option>
+                </select>RISK ASSESSMENT: 
+            </div>
+            <br/>
+            <div contenteditable style="text-align: center;" placeholder="Address of Development/Project"></div>`
+        );
+        enableRiskSelectorListener()
+        insertRemark("This (Temporary Shoring / Drill Test Pit) documented risk assessment is to be completed during preparation of design drawings, before proposing or accepting contracts. </br> It is to be filed in the project folder after client acceptance.");
+        insertTable();
+        $("#th0").html("Table 1. Considerations of Risk Assessment")
+        delColumn('t0')
+        addRow('t0')
+        addRow('t0')
+        addRow('t0')
+        addRow('t0')
+        addRow('t0')
+        addRow('t0')
+        addRow('t0')
+        addRow('t0')
+        $("#t0 .row-0").children('th:nth-child(1)').html("Risk Consideration")
+        $("#t0 .row-0").children('th:nth-child(2)').html("Remark")
+
+        $("#t0 .row-1").children('td:nth-child(1)').html("Expertise of Professional")
+        $("#t0 .row-2").children('td:nth-child(1)').html("Experience of Subordinates")
+        $("#t0 .row-3").children('td:nth-child(1)').html("Similar Project Experience?")
+        $("#t0 .row-4").children('td:nth-child(1)').html("Project Complexity")
+        $("#t0 .row-5").children('td:nth-child(1)').html("Innovative Features")
+        $("#t0 .row-6").children('td:nth-child(1)').html("Departures from Previous Practice")
+        $("#t0 .row-7").children('td:nth-child(1)').html("Applicable Codes, Standards and Regulations that define Risk Tolerance")
+        $("#t0 .row-8").children('td:nth-child(1)').html("Hazard Identification Techniques Used")
+        $("#t0 .row-9").children('td:nth-child(1)').html("Recommended Documents and Client Information")
+
+        insertTable();
+        $("#th1").html("Table 2. Risk Matrix")
+        addRow('t1')
+        addRow('t1')
+        addRow('t1')
+        addColumn('t1')
+        addColumn('t1')
+        addColumn('t1')
+        addColumn('t1')
+        addColumn('t1')
+
+        $("#t1 .row-0").children('th:nth-child(1)').html("Hazard")
+        $("#t1 .row-1").children('td:nth-child(1)').html("Utility Strike (gas / electrical)")
+        $("#t1 .row-2").children('td:nth-child(1)').html("Utility Strike (water / storm / septic / low voltage electrical / telecom)")
+        $("#t1 .row-3").children('td:nth-child(1)').html("Encountering Flowing Artesian Conditions (uncontrolled flow)")
+        $("#t1 .row-4").children('td:nth-child(1)').html("Encountering Flowing Artesian Conditions (controlled flow)")
+        
+        $("#t1 .row-0").children('th:nth-child(2)').html("Consequence")
+        $("#t1 .row-1").children('td:nth-child(2)').html("Possible loss to human life, minor to severe on site, off-site municipal or private property damage")
+        $("#t1 .row-2").children('td:nth-child(2)').html("Minor on-site, off-site municipal or private property damage. Injury very unlikely")
+        $("#t1 .row-3").children('td:nth-child(2)').html("May overwhelm on-site / off-site drainage infrastructure, void creation, off-site dewatering related settlement, sediment laden runoff that may harm aquatic habitats, aquifer to aquifer contamination, waste of groundwater, may lower pressure in aquifer, affecting the yield of neighbouring wells and springs")
+        $("#t1 .row-4").children('td:nth-child(2)').html("Temporary sediment laden runoff, small void creation")
+
+        $("#t1 .row-0").children('th:nth-child(3)').html("Severity")
+        $("#t1 .row-1").children('td:nth-child(3)').html("5/5").css("background-color", "red")
+        $("#t1 .row-2").children('td:nth-child(3)').html("3/5").css("background-color", "yellow")
+        $("#t1 .row-3").children('td:nth-child(3)').html("4/5").css("background-color", "orange")
+        $("#t1 .row-4").children('td:nth-child(3)').html("2/5").css("background-color", "greenyellow")
+
+        $("#t1 .row-0").children('th:nth-child(4)').html("Likelihood")
+        $("#t1 .row-1").children('td:nth-child(4)').html("2/5").css("background-color", "greenyellow")
+        $("#t1 .row-2").children('td:nth-child(4)').html("2/5").css("background-color", "greenyellow")
+        $("#t1 .row-3").children('td:nth-child(4)').html("1/5").css("background-color", "lime")
+        $("#t1 .row-4").children('td:nth-child(4)').html("1/5").css("background-color", "lime")
+
+        $("#t1 .row-0").children('th:nth-child(5)').html("Risk")
+        $("#t1 .row-1").children('td:nth-child(5)').html("4/5").css("background-color", "orange")
+        $("#t1 .row-2").children('td:nth-child(5)').html("3/5").css("background-color", "yellow")
+        $("#t1 .row-3").children('td:nth-child(5)').html("3/5").css("background-color", "yellow")
+        $("#t1 .row-4").children('td:nth-child(5)').html("2/5").css("background-color", "greenyellow")
+
+        $("#t1 .row-0").children('th:nth-child(6)').html("Mitigation")
+        $("#t1 .row-1").children('td:nth-child(6)').html("Conduct “BC One-Call (BCOC)” and engage sub-contractor to locate site-specific utilities prior to drilling. Gather as-built plans from client / civil designer.")
+        $("#t1 .row-2").children('td:nth-child(6)').html("Conduct “BC One-Call (BCOC)” and engage sub-contractor to locate site-specific utilities prior to drilling. Gather as-built plans from client / civil designer.")
+        $("#t1 .row-3").children('td:nth-child(6)').attr("rowspan", 2)
+        $("#t1 .row-3").children('td:nth-child(6)').html(`Special consideration should be given to sites where artesian conditions are known to exist, prior to any drill based investigation. As defined by EGBC, the minimum “screening” for flowing artesian conditions should, at a minimum, include the following: 
+        <br><br>• Evaluation of available geological, topographic, and aerial photography mapping
+        <br><br>• Review of well logs available online through the province of BC Groundwater Wells and Aquifers (GWELLS) application
+        <br><br>• Review of available Well Drilling Advisories for Flowing Artesian Conditions (Province of BC 2020b)
+        <br><br>• The development of a conceptual hydrogeological model for the project site that considers: available data, formations likely to be encountered, probable recharge area, potential for constrictors, potential for penetrating aquitards, potential for penetrating productive aquifers below the confining layers
+        <br><br>• Review of the Water Resource Atlas of British Columbia and any applicable well logs nearby to the proposed investigation
+        <br><br>• Development of a water management plan that addresses both controlled discharge of non-turbid groundwater, and uncontrolled discharge of potentially contaminated with fines, cement, or drilling fluid`)
+        $("#t1 .row-4").children('td:nth-child(6)').remove();
+
+
+        $("#t1 .row-0").children('th:nth-child(7)').html("Justification")
+        $("#t1 .row-1").children('td:nth-child(7)').html("A BCOC is required prior to any type of ground disturbance in BC. BCOC provides valuable information regarding existing off-site and some on-site utilities prior to drilling. Results of BCOC and as-built plans form a strong basis for utility location, prior to finalizing safe drilling sites.")
+        $("#t1 .row-2").children('td:nth-child(7)').html("A BCOC is required prior to any type of ground disturbance in BC. BCOC provides valuable information regarding existing off-site and some on-site utilities prior to drilling. Results of BCOC and as-built plans form a strong basis for utility location, prior to finalizing safe drilling sites.")
+        $("#t1 .row-3").children('td:nth-child(7)').attr("rowspan", 2)
+        $("#t1 .row-3").children('td:nth-child(7)').html("Once the research to the left has been considered, a conservative approach may be taken if artesian conditions may be present. This might include proactively incorporating measures that mitigate flowing artesian conditions into the monitoring well design or preparing to control artesian flows should they be encountered during drilling. If sufficient gaps in data exist, the engineering/geoscience professional on record managing the project should consider the eventualities related to both controlled and uncontrolled flowing artesian wells.")
+        $("#t1 .row-4").children('td:nth-child(7)').remove();
+
+        $("#t1 .row-0").children('th:nth-child(8)').html("Applicable?")
+
+       insertRemark("When drilling in areas where artesian conditions are known to exist, a review of the proposed drill depths / locations / proposed well screen lengths should be carried out by an appropriately qualified and experienced Professional Registrant and/or project manager. Although the submission of well construction reports to the Comptroller of Water Rights is not required for certain classes of wells (such as monitoring wells and temporary dewatering wells), if artesian conditions are encountered, then a well construction report must be submitted.")
+
+       insertSelection({'title': "Independent Review Requirement"});
 
     } else {
         $('#proposal-header').hide();
@@ -192,6 +346,45 @@ function deleteSection(id) {
     $( "#sc"+id).remove();
 }
 
+//------------------------------------------------------ SELECTION FUNCTIONALITY ------------------------------------------------------//
+
+function insertSelection(input) {
+    console.log("INSERTING SELECTION")
+    console.log("INPUT: ", input)
+    $( "#memo" ).append(`
+        <tr class="selection-container ui-sortable-handle" id=\'selc`+selections+`\'>
+            <td colspan='100%' class='section'>
+                <button onclick=deleteSection(`+selections+`)>x</button>
+                <div contenteditable placeholder="Selection Header" class="selection-header" style= "font-weight:bold" id=selh`+selections+`>`+input['title']+`</div>
+                <table>
+                    <tr>
+                        <td>
+                            <select id="sels`+selections+`" onchange="changeSelection(event, `+selections+`)">
+                                <option value=''>None</option>
+                                <option value='Professional of Record and Firm have extensive experience with the type and scale of the High-Risk Professional Activities or Work (HRPAW), there are no innovative or particularly complex aspects of the HRPAW, or the HRPAW only involves problems with well-defined solutions.'>Type 1</option>
+                                <option value='Professional of Record and Firm have less experience with the type and scale of the HRPAW, there are innovative or particularly complex aspects of the HRPAW, or the HRPAW involves problems without well- defined solutions. Type 2 Independent Review will usually be required for HRPAW involving new and emerging technologies.'>Type 2</option>
+                            </select>
+                        </td>
+                        <td id="seld`+selections+`">
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    `)
+    selections++;
+}
+
+function changeSelection(event, id) {
+    console.log(event.target.value)
+    console.log("#seld"+id)
+    $("#seld"+id).html(event.target.value);
+}
+
+function deleteSelection(id) {
+    $( "#selc"+id).remove();
+}
+
 //------------------------------------------------------ SIGNATURE FUNCTIONALITY ------------------------------------------------------//
 
 function insertSignature() {
@@ -254,25 +447,25 @@ function insertTable() {
     $( "#memo" ).append(`
         <tr class="table-container ui-sortable-handle" id=\'table-container-`+tables+`\'>
             <td colspan='100%'>
-                <div class='table-control'>
+                <span class='table-control'>
                 <button onclick=deleteTable(`+tables+`)>x</button>
                 Columns <button onclick= delColumn(\'t`+tables+`\') >-</button><button onclick= addColumn(\'t`+tables+`\') >+</button>
                 Rows <button onclick= delRow(\'t`+tables+`\') >-</button><button onclick= addRow(\'t`+tables+`\') >+</button>
-                </div>
+                </span>
+                <span style="text-align:center; font-weight: bold" contenteditable id = \'th`+tables+`\'>Table `+(tables+1)+`</span>
                 <table id = \'t`+tables+`\' class = 'content-table' contenteditable>
 
-                    <tr class='header-row'> 
+                    <tr class='row-0'> 
                         <th>&nbsp;</th>
                         <th>&nbsp;</th>
                         <th>&nbsp;</th>
                     </tr> 
-                    <tr>
+                    <tr class='row-1'>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
                     </tr>
                 </table>
-                <div style="text-align:center" contenteditable>Table `+(tables+1)+`</div>
             </td>
         </tr>
     `)
@@ -307,8 +500,11 @@ function delColumn(tableId) {
 }
 
 function addRow(tableId) {
+    var rows = $( "#"+tableId+" tbody").children().length;
+    console.log("ROWS: ", rows)
+
     var cols = $( "#"+tableId+" tr:last-child").children().length;
-    var new_row = "<tr>"
+    var new_row = "<tr class= 'row-"+rows+"'>"
     for(var c = 0; c<cols; c++) {
         new_row += "<td>&nbsp;</td>"
     }
@@ -349,26 +545,24 @@ function enableTab(id) {
     };
 }
 
+//------------------------------------------------------ REMARK FUNCTIONALITY ------------------------------------------------------//
+function insertRemark(r) {
+    $( "#memo" ).append(`
+        <tr class="remark-container ui-sortable-handle" id=\'r`+remarks+`\'>
+            <td colspan='100%' class='remark'>
+                <button onclick=deleteRemark(`+remarks+`)>x</button></br>
+                <div id = r`+remarks+` contenteditable style="text-align: center; border: 2px solid #000000; font-weight:bold">`+r+`</div>
 
-//------------------------------------------------------ MEMORANDUM FUNCTIONALITY ------------------------------------------------------//
-function insertMemorandum() {
-    insertTable();
-    $("#t0").val("PURPOSE")
-    //console.log($("#t0 .header-row").children().toArray())
-    $("#t0 .header-row").children('th:nth-child(1)').html("TIME")
-    $("#t0 .header-row").children('th:nth-child(2)').html("WEATHER")
-    $("#t0 .header-row").children('th:nth-child(3)').html("MACHINERY/EQUIPTMENT ADJACENT TO EXCAVATION")
-
-
-    insertSection();
-    $("#sh0").val("PURPOSE")
-    insertSection();
-    $("#sh1").val("OBSERVATIONS")
-    insertSection();
-    $("#sh2").val("CONCLUSIONS & RECOMMENDATIONS")
-    insertImage();
+            </td>
+        </tr>
+    `)
+    enableTab("r"+remarks)
+    remarks++;
 }
 
+function deleteRemark(id) {
+    $( "#r"+id).remove();
+}
 //------------------------------------------------------ VARIOUS FUNCTIONALITY ------------------------------------------------------//
 
 // make memo items rearrangeable
@@ -387,6 +581,32 @@ $("div").focusout(function(){
         element.empty();
     }
 });
+
+// make risk type selector dymanic in size
+function enableRiskSelectorListener() {
+    const select = document.getElementById('risk-selector')
+
+    select.addEventListener('change', (event) => {
+      let tempSelect = document.createElement('select'),
+          tempOption = document.createElement('option');
+    
+      tempOption.textContent = event.target.options[event.target.selectedIndex].text;
+      tempSelect.style.cssText += `
+          visibility: hidden;
+          position: fixed;
+          `;
+      tempSelect.appendChild(tempOption);
+      event.target.after(tempSelect);
+      
+      const tempSelectWidth = tempSelect.getBoundingClientRect().width;
+      console.log(tempSelect)
+      console.log(tempSelectWidth)
+      event.target.style.width = `${tempSelectWidth-15}px`;
+      tempSelect.remove();
+    });
+    
+    select.dispatchEvent(new Event('change'));
+}
 
 //------------------------------------------------------ UPLOAD FUNCTIONALITY ------------------------------------------------------//
 

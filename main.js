@@ -10,7 +10,9 @@ function createWindow () {
     const win = new BrowserWindow({
         width: 1400,
         height: 1000,
-        titleBarStyle: 'hidden',
+        //titleBarStyle: 'hidden',
+        trafficLightPosition: { x: 10, y: 8 },
+
         webPreferences: {
             preload: path.join(__dirname, './src/preload.js'),
             enableRemoteModule: true
