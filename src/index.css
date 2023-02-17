@@ -2,7 +2,7 @@
     -webkit-print-color-adjust: exact !important;   /* Chrome, Safari 6 – 15.3, Edge */
     color-adjust: exact !important;                 /* Firefox 48 – 96 */
     print-color-adjust: exact !important;           /* Firefox 97+, Safari 15.4+ */
-    font-size:14px; 
+    font-size:12px; 
     font-family: "Arial";
 }
 
@@ -28,7 +28,6 @@ button:hover, select:hover {
 }
 
 #parameters {
-    position: fixed;
     right:0px;
     top:0px;
     z-index: 2;
@@ -38,7 +37,11 @@ button:hover, select:hover {
     -webkit-app-region: drag;
     text-align: right;
     width:100%;
+    font-size:14px !important; 
+}
 
+#parameters * {
+    font-size:14px !important; 
 }
 
 #parameters button {
@@ -150,7 +153,6 @@ table {
 }
 
 tr {
-    border: solid 1px #FF0000 !important;
     width:100%;
     page-break-inside: avoid;
 }
@@ -163,7 +165,6 @@ th {
 
 td {
     border: 1px solid #DDDDDD;
-    padding:0px;
     /*white-space: nowrap;*/
     text-align: left;
 }
@@ -181,18 +182,14 @@ td {
     vertical-align: top;
 }
 
-#proposal-title {
+#proposal-title * {
     font-weight: bold;
-    font-size:16px;
+    font-size:16px !important;
     text-align: center;
 }
 
 #title-address {
     text-align: center !important;
-}
-
-#proposal-header {
-    display:none;
 }
 
 #geotechnical-header {
@@ -238,19 +235,28 @@ div[placeholder]:empty:focus:before {
 @media print {
     @page {
         size: auto;
-        margin-top: 0;
         margin-left: 0;
         margin-right: 0;
         page-break-before: always; /*This style rule makes every page element start at the top of a new page:*/
     }
 
+    #proposal-title * {
+        font-weight: bold;
+        font-size:16px !important;
+        text-align: center;
+    }
+
     body * {
         visibility: hidden;
+        font-size: 10px;
     }
 
     #memo, #memo * {
         visibility: visible;
         border: none;
+    }
+
+    #header {
 
     }
 
@@ -258,18 +264,18 @@ div[placeholder]:empty:focus:before {
         position:fixed;
         visibility: visible;
         /*counter-increment: page;*/
-
     }
 
     #footer * {
         visibility: visible;
-        border:none;
+        border: none;
     }
 
     #memo {
         position: absolute;
         left: 0;
         top: 0;
+        padding-top:0px;
     }
 
     textarea:focus, input:focus{
@@ -286,15 +292,26 @@ div[placeholder]:empty:focus:before {
     }
 
     .content-table * {
-        border: 1px solid #000000 !important;
-    }
-    
-    button, select {
-        display: none;
+        border: 1px solid #323232 !important;
     }
 
-    #risk-selector {
-        display:inline-block;
+    .content-table td {
+        padding:2px;
+    }
+    
+    button {
+        display: none;
+
+    }
+
+    select {
+        -webkit-appearance: none;
+        -moz-appearance: none; 
+        appearance: none; 
+    }
+
+    #location-selector {
+        display: none;
     }
 
     /* hide placeholders */

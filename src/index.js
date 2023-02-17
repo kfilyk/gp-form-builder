@@ -54,7 +54,7 @@ $('#type-selector').change(function(event) {
 
     if($('#type-selector').val() == "PROPOSAL") {
         $('#proposal-header').css({"display": "table-row"});
-        $('#proposal-title').html('<div contenteditable style="text-align: center;" placeholder="Re: Type of Report/Letter - Title of Report/Letter"></div><br/><div contenteditable style="text-align: center;" placeholder="Address of Development/Project"></div>');
+        $('#proposal-title').html('<div contenteditable style="text-align: center;" placeholder="Re: Type of Report/Letter - Title of Report/Letter"></div><div contenteditable style="text-align: center;" placeholder="Address of Development/Project"></div>');
         $('#file-r').css({"display": "block"});
         $('#file-co').css({"display": "block"});
         $('#file-prp').css({"display": "block"});
@@ -121,7 +121,6 @@ $('#type-selector').change(function(event) {
                     <option>ITERATIVE</option>
                 </select>RISK ASSESSMENT: 
             </div>
-            <br/>
             <div contenteditable style="text-align: center;" placeholder="Address of Development/Project"></div>`
         );
         enableRiskSelectorListener()
@@ -158,8 +157,6 @@ $('#type-selector').change(function(event) {
         addColumn('t1')
         addColumn('t1')
         addColumn('t1')
-        addColumn('t1')
-        addColumn('t1')
 
         $("#t1 .row-0").children('th:nth-child(1)').html("Hazard")
         $("#t1 .row-1").children('td:nth-child(1)').html("Utility Strike (gas / electrical)")
@@ -191,33 +188,39 @@ $('#type-selector').change(function(event) {
         $("#t1 .row-3").children('td:nth-child(5)').html("3/5").css("background-color", "yellow")
         $("#t1 .row-4").children('td:nth-child(5)').html("2/5").css("background-color", "greenyellow")
 
-        $("#t1 .row-0").children('th:nth-child(6)').html("Mitigation")
-        $("#t1 .row-1").children('td:nth-child(6)').html("Conduct “BC One-Call (BCOC)” and engage sub-contractor to locate site-specific utilities prior to drilling. Gather as-built plans from client / civil designer.")
-        $("#t1 .row-2").children('td:nth-child(6)').html("Conduct “BC One-Call (BCOC)” and engage sub-contractor to locate site-specific utilities prior to drilling. Gather as-built plans from client / civil designer.")
-        $("#t1 .row-3").children('td:nth-child(6)').attr("rowspan", 2)
-        $("#t1 .row-3").children('td:nth-child(6)').html(`Special consideration should be given to sites where artesian conditions are known to exist, prior to any drill based investigation. As defined by EGBC, the minimum “screening” for flowing artesian conditions should, at a minimum, include the following: 
+        $("#t1 .row-0").children('th:nth-child(6)').html("Applicable?")
+
+        insertTable();
+        $("#th2").html("Table 3. Mitigation Matrix")
+        addRow('t2')
+        addColumn('t2')
+
+        $("#t2 .row-0").children('th:nth-child(1)').html("Hazard")
+        $("#t2 .row-1").children('td:nth-child(1)').html('Utility Strike')
+        $("#t2 .row-2").children('td:nth-child(1)').html('Artesian Conditions');
+
+        $("#t2 .row-0").children('th:nth-child(2)').html("Mitigation")
+        $("#t2 .row-1").children('td:nth-child(2)').html("Conduct “BC One-Call (BCOC)” and engage sub-contractor to locate site-specific utilities prior to drilling. Gather as-built plans from client / civil designer.")
+        $("#t2 .row-2").children('td:nth-child(2)').html(`Special consideration should be given to sites where artesian conditions are known to exist, prior to any drill based investigation. As defined by EGBC, the minimum “screening” for flowing artesian conditions should, at a minimum, include the following: 
         <br><br>• Evaluation of available geological, topographic, and aerial photography mapping
         <br><br>• Review of well logs available online through the province of BC Groundwater Wells and Aquifers (GWELLS) application
         <br><br>• Review of available Well Drilling Advisories for Flowing Artesian Conditions (Province of BC 2020b)
         <br><br>• The development of a conceptual hydrogeological model for the project site that considers: available data, formations likely to be encountered, probable recharge area, potential for constrictors, potential for penetrating aquitards, potential for penetrating productive aquifers below the confining layers
         <br><br>• Review of the Water Resource Atlas of British Columbia and any applicable well logs nearby to the proposed investigation
         <br><br>• Development of a water management plan that addresses both controlled discharge of non-turbid groundwater, and uncontrolled discharge of potentially contaminated with fines, cement, or drilling fluid`)
-        $("#t1 .row-4").children('td:nth-child(6)').remove();
 
+        $("#t2 .row-0").children('th:nth-child(3)').html("Justification")
+        $("#t2 .row-1").children('td:nth-child(3)').html("A BCOC is required prior to any type of ground disturbance in BC. BCOC provides valuable information regarding existing off-site and some on-site utilities prior to drilling. Results of BCOC and as-built plans form a strong basis for utility location, prior to finalizing safe drilling sites.")
+        $("#t2 .row-2").children('td:nth-child(3)').html("Once the research has been considered, a conservative approach may be taken if artesian conditions may be present. This might include proactively incorporating measures that mitigate flowing artesian conditions into the monitoring well design or preparing to control artesian flows should they be encountered during drilling. If sufficient gaps in data exist, the engineering/geoscience professional on record managing the project should consider the eventualities related to both controlled and uncontrolled flowing artesian wells.")
 
-        $("#t1 .row-0").children('th:nth-child(7)').html("Justification")
-        $("#t1 .row-1").children('td:nth-child(7)').html("A BCOC is required prior to any type of ground disturbance in BC. BCOC provides valuable information regarding existing off-site and some on-site utilities prior to drilling. Results of BCOC and as-built plans form a strong basis for utility location, prior to finalizing safe drilling sites.")
-        $("#t1 .row-2").children('td:nth-child(7)').html("A BCOC is required prior to any type of ground disturbance in BC. BCOC provides valuable information regarding existing off-site and some on-site utilities prior to drilling. Results of BCOC and as-built plans form a strong basis for utility location, prior to finalizing safe drilling sites.")
-        $("#t1 .row-3").children('td:nth-child(7)').attr("rowspan", 2)
-        $("#t1 .row-3").children('td:nth-child(7)').html("Once the research to the left has been considered, a conservative approach may be taken if artesian conditions may be present. This might include proactively incorporating measures that mitigate flowing artesian conditions into the monitoring well design or preparing to control artesian flows should they be encountered during drilling. If sufficient gaps in data exist, the engineering/geoscience professional on record managing the project should consider the eventualities related to both controlled and uncontrolled flowing artesian wells.")
-        $("#t1 .row-4").children('td:nth-child(7)').remove();
+        $("#t2 .row-0").children('th:nth-child(4)').html("Applicable?")
 
-        $("#t1 .row-0").children('th:nth-child(8)').html("Applicable?")
+            
+        insertRemark("When drilling in areas where artesian conditions are known to exist, a review of the proposed drill depths / locations / proposed well screen lengths should be carried out by an appropriately qualified and experienced Professional Registrant and/or project manager. Although the submission of well construction reports to the Comptroller of Water Rights is not required for certain classes of wells (such as monitoring wells and temporary dewatering wells), if artesian conditions are encountered, then a well construction report must be submitted.")
 
-       insertRemark("When drilling in areas where artesian conditions are known to exist, a review of the proposed drill depths / locations / proposed well screen lengths should be carried out by an appropriately qualified and experienced Professional Registrant and/or project manager. Although the submission of well construction reports to the Comptroller of Water Rights is not required for certain classes of wells (such as monitoring wells and temporary dewatering wells), if artesian conditions are encountered, then a well construction report must be submitted.")
+        insertSelection({'title': "Independent Review Requirement"});
 
-       insertSelection({'title': "Independent Review Requirement"});
-
+        insertSignature();
     } else {
         $('#proposal-header').hide();
         $('#proposal-title').html($('#type-selector').val());
@@ -395,11 +398,11 @@ function insertSignature() {
 
                 <table>
                     <tr>
-                        <td><div contenteditable/>Yours, </div>
+                        <td><div contenteditable/>Yours truly, </div>
                     </tr>
                     <tr>
                         <td colspan='50%' class="signature">
-                            <div contenteditable/>GeoPacific Consultants Ltd.</div>
+                            <div contenteditable style="font-weight:bold">GeoPacific Consultants Ltd.</div>
                             <br/>
                             <br/>
                             <br/>

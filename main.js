@@ -49,14 +49,15 @@ var options = {
   printBackground: true,
   color: false,
   margin: {
-      marginType: 'printableArea'
+      marginType: 'printableArea',
+      top: 0,
   },
   landscape: false,
   pagesPerSheet: 1,
   collate: false,
   copies: 1,
   displayHeaderFooter: true,
-  footerTemplate:"<span class='url'></span>",
+  headerTemplate:'<span></span>',
   pageSize: "A4",
 }
 
