@@ -234,7 +234,7 @@ $('#type-selector').change(function(event) {
         $("#t2 .row-2").children('td:nth-child(3)').html("Once the research has been considered, a conservative approach may be taken if artesian conditions may be present. This might include proactively incorporating measures that mitigate flowing artesian conditions into the monitoring well design or preparing to control artesian flows should they be encountered during drilling. If sufficient gaps in data exist, the engineering/geoscience professional on record managing the project should consider the eventualities related to both controlled and uncontrolled flowing artesian wells.")
 
         $("#t2 .row-0").children('th:nth-child(4)').html("Revised Risk")
-        $("#t2 .row-1").children('td:nth-child(4)').html("3/5").css("background-color", "orange")
+        $("#t2 .row-1").children('td:nth-child(4)').html("3/5").css("background-color", "yellow")
         $("#t2 .row-2").children('td:nth-child(4)').html("1/5").css("background-color", "lime")
         $("#t2 .row-3").children('td:nth-child(4)').html("2/5").css("background-color", "greenyellow")
 
