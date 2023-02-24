@@ -115,7 +115,7 @@ $('#type-selector').change(function(event) {
         $('#proposal-header').css({"display": "table-row"});
         $('#proposal-title').html(`
             <div contenteditable style="text-align: center;">
-                <select style="-webkit-appearance: none; font-weight:bold" id="risk-selector">
+                <select id="risk-selector">
                     <option>PROJECT-SPECIFIC</option>
                     <option>GLOBAL</option>
                     <option>ITERATIVE</option>
@@ -124,7 +124,7 @@ $('#type-selector').change(function(event) {
             <div contenteditable style="text-align: center;" placeholder="Address of Development/Project"></div>`
         );
         enableRiskSelectorListener()
-        insertRemark("This (Temporary Shoring / Drill Test Pit) documented risk assessment is to be completed during preparation of design drawings, before proposing or accepting contracts. </br> It is to be filed in the project folder after client acceptance.");
+        insertRemark("This (Temporary Shoring / Drill Test Pit) documented risk assessment is to be completed during preparation of design drawings, before proposing or accepting contracts. </br> Risk assessments must be filed in the project folder after client acceptance.");
         insertTable();
         $("#th0").html("Table 1. Considerations of Risk Assessment")
         delColumn('t0')
@@ -154,50 +154,69 @@ $('#type-selector').change(function(event) {
         addRow('t1')
         addRow('t1')
         addRow('t1')
+        addRow('t1')
+
         addColumn('t1')
         addColumn('t1')
         addColumn('t1')
 
         $("#t1 .row-0").children('th:nth-child(1)').html("Hazard")
-        $("#t1 .row-1").children('td:nth-child(1)').html("Utility Strike (gas / electrical)")
-        $("#t1 .row-2").children('td:nth-child(1)').html("Utility Strike (water / storm / septic / low voltage electrical / telecom)")
+        $("#t1 .row-1").children('td:nth-child(1)').html("Utility Strike (Gas / Electrical)")
+        $("#t1 .row-2").children('td:nth-child(1)').html("Utility Strike (Water / Storm / Septic / Low voltage electrical / Telecom)")
         $("#t1 .row-3").children('td:nth-child(1)').html("Encountering Flowing Artesian Conditions (uncontrolled flow)")
         $("#t1 .row-4").children('td:nth-child(1)').html("Encountering Flowing Artesian Conditions (controlled flow)")
-        
+        $("#t1 .row-5").children('td:nth-child(1)').html("Incorrect/Incomplete Drill/Base Data")
+
         $("#t1 .row-0").children('th:nth-child(2)').html("Consequence")
         $("#t1 .row-1").children('td:nth-child(2)').html("Possible loss to human life, minor to severe on site, off-site municipal or private property damage")
         $("#t1 .row-2").children('td:nth-child(2)').html("Minor on-site, off-site municipal or private property damage. Injury very unlikely")
         $("#t1 .row-3").children('td:nth-child(2)').html("May overwhelm on-site / off-site drainage infrastructure, void creation, off-site dewatering related settlement, sediment laden runoff that may harm aquatic habitats, aquifer to aquifer contamination, waste of groundwater, may lower pressure in aquifer, affecting the yield of neighbouring wells and springs")
         $("#t1 .row-4").children('td:nth-child(2)').html("Temporary sediment laden runoff, small void creation")
+        $("#t1 .row-5").children('td:nth-child(2)').html("Incorrect design recommendations")
 
         $("#t1 .row-0").children('th:nth-child(3)').html("Severity")
-        $("#t1 .row-1").children('td:nth-child(3)').html("5/5").css("background-color", "red")
+        $("#t1 .row-1").children('td:nth-child(3)').html("5/5").css("background-color", "orangered")
         $("#t1 .row-2").children('td:nth-child(3)').html("3/5").css("background-color", "yellow")
         $("#t1 .row-3").children('td:nth-child(3)').html("4/5").css("background-color", "orange")
         $("#t1 .row-4").children('td:nth-child(3)').html("2/5").css("background-color", "greenyellow")
+        $("#t1 .row-5").children('td:nth-child(3)').html("4/5").css("background-color", "orange")
+
 
         $("#t1 .row-0").children('th:nth-child(4)').html("Likelihood")
         $("#t1 .row-1").children('td:nth-child(4)').html("2/5").css("background-color", "greenyellow")
         $("#t1 .row-2").children('td:nth-child(4)').html("2/5").css("background-color", "greenyellow")
         $("#t1 .row-3").children('td:nth-child(4)').html("1/5").css("background-color", "lime")
         $("#t1 .row-4").children('td:nth-child(4)').html("1/5").css("background-color", "lime")
+        $("#t1 .row-5").children('td:nth-child(4)').html("2/5").css("background-color", "greenyellow")
+
 
         $("#t1 .row-0").children('th:nth-child(5)').html("Risk")
         $("#t1 .row-1").children('td:nth-child(5)').html("4/5").css("background-color", "orange")
         $("#t1 .row-2").children('td:nth-child(5)').html("3/5").css("background-color", "yellow")
         $("#t1 .row-3").children('td:nth-child(5)').html("3/5").css("background-color", "yellow")
         $("#t1 .row-4").children('td:nth-child(5)').html("2/5").css("background-color", "greenyellow")
+        $("#t1 .row-5").children('td:nth-child(5)').html("3/5").css("background-color", "yellow")
 
         $("#t1 .row-0").children('th:nth-child(6)').html("Applicable?")
+        $("#t1 .row-1").children('td:nth-child(6)').html("<input type='checkbox'>")
+        $("#t1 .row-2").children('td:nth-child(6)').html("<input type='checkbox'>")
+        $("#t1 .row-3").children('td:nth-child(6)').html("<input type='checkbox'>")
+        $("#t1 .row-4").children('td:nth-child(6)').html("<input type='checkbox'>")
+        $("#t1 .row-5").children('td:nth-child(6)').html("<input type='checkbox'>")
+
 
         insertTable();
         $("#th2").html("Table 3. Mitigation Matrix")
         addRow('t2')
+        addRow('t2')
         addColumn('t2')
+        addColumn('t2')
+
 
         $("#t2 .row-0").children('th:nth-child(1)').html("Hazard")
         $("#t2 .row-1").children('td:nth-child(1)').html('Utility Strike')
         $("#t2 .row-2").children('td:nth-child(1)').html('Artesian Conditions');
+        $("#t2 .row-3").children('td:nth-child(1)').html('Incorrect/Incomplete Drill/Base Data');
 
         $("#t2 .row-0").children('th:nth-child(2)').html("Mitigation")
         $("#t2 .row-1").children('td:nth-child(2)').html("Conduct “BC One-Call (BCOC)” and engage sub-contractor to locate site-specific utilities prior to drilling. Gather as-built plans from client / civil designer.")
@@ -208,13 +227,22 @@ $('#type-selector').change(function(event) {
         <br><br>• The development of a conceptual hydrogeological model for the project site that considers: available data, formations likely to be encountered, probable recharge area, potential for constrictors, potential for penetrating aquitards, potential for penetrating productive aquifers below the confining layers
         <br><br>• Review of the Water Resource Atlas of British Columbia and any applicable well logs nearby to the proposed investigation
         <br><br>• Development of a water management plan that addresses both controlled discharge of non-turbid groundwater, and uncontrolled discharge of potentially contaminated with fines, cement, or drilling fluid`)
+        $("#t2 .row-3").children('td:nth-child(2)').html("Check that the site has been drilled with adequate coverage and to the correct depths.")
 
         $("#t2 .row-0").children('th:nth-child(3)').html("Justification")
         $("#t2 .row-1").children('td:nth-child(3)').html("A BCOC is required prior to any type of ground disturbance in BC. BCOC provides valuable information regarding existing off-site and some on-site utilities prior to drilling. Results of BCOC and as-built plans form a strong basis for utility location, prior to finalizing safe drilling sites.")
         $("#t2 .row-2").children('td:nth-child(3)').html("Once the research has been considered, a conservative approach may be taken if artesian conditions may be present. This might include proactively incorporating measures that mitigate flowing artesian conditions into the monitoring well design or preparing to control artesian flows should they be encountered during drilling. If sufficient gaps in data exist, the engineering/geoscience professional on record managing the project should consider the eventualities related to both controlled and uncontrolled flowing artesian wells.")
 
-        $("#t2 .row-0").children('th:nth-child(4)').html("Applicable?")
+        $("#t2 .row-0").children('th:nth-child(4)').html("Revised Risk")
+        $("#t2 .row-1").children('td:nth-child(4)').html("3/5").css("background-color", "orange")
+        $("#t2 .row-2").children('td:nth-child(4)').html("1/5").css("background-color", "lime")
+        $("#t2 .row-3").children('td:nth-child(4)').html("2/5").css("background-color", "greenyellow")
 
+        $("#t2 .row-0").children('th:nth-child(5)').html("Applicable?")
+        $("#t2 .row-1").children('td:nth-child(5)').html("<input type='checkbox'>")
+        $("#t2 .row-2").children('td:nth-child(5)').html("<input type='checkbox'>")
+        $("#t2 .row-3").children('td:nth-child(5)').html("<input type='checkbox'>")
+ 
             
         insertRemark("When drilling in areas where artesian conditions are known to exist, a review of the proposed drill depths / locations / proposed well screen lengths should be carried out by an appropriately qualified and experienced Professional Registrant and/or project manager. Although the submission of well construction reports to the Comptroller of Water Rights is not required for certain classes of wells (such as monitoring wells and temporary dewatering wells), if artesian conditions are encountered, then a well construction report must be submitted.")
 
@@ -362,13 +390,9 @@ function insertSelection(input) {
                 <table>
                     <tr>
                         <td>
-                            <select id="sels`+selections+`" onchange="changeSelection(event, `+selections+`)">
-                                <option value=''>None</option>
-                                <option value='Professional of Record and Firm have extensive experience with the type and scale of the High-Risk Professional Activities or Work (HRPAW), there are no innovative or particularly complex aspects of the HRPAW, or the HRPAW only involves problems with well-defined solutions.'>Type 1</option>
-                                <option value='Professional of Record and Firm have less experience with the type and scale of the HRPAW, there are innovative or particularly complex aspects of the HRPAW, or the HRPAW involves problems without well- defined solutions. Type 2 Independent Review will usually be required for HRPAW involving new and emerging technologies.'>Type 2</option>
-                            </select>
-                        </td>
-                        <td id="seld`+selections+`">
+                            <label><input type='radio' value='' name='indep_review'><b>None</b></label><br><br>
+                            <label><input type='radio' value='' name='indep_review'><b>Type 1: </b>Carried out by an appropriately qualified and experienced Professional Registrant with no prior involvement in the Professional Activities or Work. Professional of Record and Firm have extensive experience with the type and scale of the High-Risk Professional Activities or Work (HRPAW), there are no innovative or particularly complex aspects of the HRPAW, or the HRPAW only involves problems with well-defined solutions.</label><br><br>
+                            <label><input type='radio' value='' name='indep_review'><b>Type 2: </b>Carried out by an appropriately qualified and experienced Professional Registrant with no prior involvement in the Professional Activities or Work. Professional of Record and Firm have less experience with the type and scale of the HRPAW, there are innovative or particularly complex aspects of the HRPAW, or the HRPAW involves problems without well- defined solutions. Type 2 Independent Review will usually be required for HRPAW involving new and emerging technologies.</label>
                         </td>
                     </tr>
                 </table>
@@ -604,7 +628,7 @@ function enableRiskSelectorListener() {
       const tempSelectWidth = tempSelect.getBoundingClientRect().width;
       console.log(tempSelect)
       console.log(tempSelectWidth)
-      event.target.style.width = `${tempSelectWidth-15}px`;
+      event.target.style.width = `${tempSelectWidth-10}px`;
       tempSelect.remove();
     });
     

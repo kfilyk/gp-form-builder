@@ -16,9 +16,9 @@
     <body onload="initDocument()">
 
         <div id="parameters">
-            <button id="pdf-button"><img width="20px" src="./images/download.png" title="Download As PDF"></button>
-            <button id="upload-button"><img width="20px" src="./images/upload.png" title="Upload JSON To FormBuilder"></button>
-            <button id="save-button" onclick="saveForm()"><img width="20px" src="./images/diskette.png" title="Save Form To JSON"></button>
+            <button id="pdf-button" data-tooltip="Download As PDF"><img width="20px" src="./images/download.png"></button>
+            <button id="upload-button" data-tooltip="Import JSON"><img width="20px" src="./images/upload.png"></button>
+            <button id="save-button" onclick="saveForm()" data-tooltip="Save As JSON"><img width="20px" src="./images/diskette.png"></button>
             <input id="upload-input" type="file" name="filename" style="display: none;"/>
 
             <select id="type-selector">
@@ -32,7 +32,7 @@
 
         </div>
 
-        <table id="memo">
+        <table id="memo" >
             <tr id="header">
                 <td colspan="50%">                
                     <img id="logo" src="./images/geopacific_logo.png">
