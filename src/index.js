@@ -50,6 +50,7 @@ $('#type-selector').change(function(event) {
     $('.table-container').remove()
     $('.review-container').remove()
     $('.remark-container').remove()
+    $('.signature-container').remove()
 
 
     if($('#type-selector').val() == "PROPOSAL") {
@@ -635,41 +636,6 @@ function enableRiskSelectorListener() {
     select.dispatchEvent(new Event('change'));
 }
 
-//------------------------------------------------------ UPLOAD FUNCTIONALITY ------------------------------------------------------//
-
-// Trigger file upload  
-$('#upload-button').click(function(){ $('#upload-input').trigger('click'); });
-
-function readJSON(event){
-    console.log(event)
-    var form = JSON.parse(event.target.result);
-    console.log(form)
-    console.log($("#type-selector"))//.attr("value", obj['type'])
-    $("#type-selector").val(form['type']).change();
-    // remove all memo sections
-    $(".image-container").remove();
-    $(".section-container").remove();
-    $(".table-container").remove();
-    $(".signature-container").remove();
-
-    $("#location-selector").val(form['location']).change();
-    $("#proposal-header").replaceWith(form['header'])
-
-    for(var i = 0; form.hasOwnProperty('e'+i); i++ ) {
-        $("#memo").append(form['e'+i])
-        //console.log(i)
-    }
-}
-
-document.getElementById('upload-input').addEventListener('change', (event) => {
-    console.log("UPLOADING")
-    var reader = new FileReader();
-    reader.onload = readJSON;
-    reader.readAsText(event.target.files[0])
-    console.log(event.target.files)
-
-});
-
 //------------------------------------------------------ PDF FUNCTIONALITY ------------------------------------------------------//
 
 var current = document.getElementById('pdf-button'); 
@@ -697,45 +663,8 @@ function saveForm() {
     form['location'] = location.options[location.selectedIndex].value
 
     form['header'] = $('#proposal-header')[0].outerHTML;
-    /*
-    var $inputs = $('#proposal-header :input');
-    console.log($inputs)
-    $inputs.each(function() {
-        form[this.id] = $(this).val();
-    });
-    */
 
-    var element = 0; // start denoting memo elements; and save them in order
-    var rows = $('#memo').children('tr').map(function() {
-
-        // get all inputs, selects, and textareas 
-        var classes = $(this).attr('class')
-        console.log($(this))
-        if(classes.includes('table-container')) {
-            console.log("TABLE");
-            form['e'+element] = $(this)[0].outerHTML;
-            element++
-
-        } else if(classes.includes('section-container')) {
-            console.log("SECTION");
-            var txtarea = $(this).find('textarea')[0]
-            txtarea.textContent = txtarea.value /* save text area content */ 
-            form['e'+element] = $(this)[0].outerHTML;
-            element++
-
-        } else if(classes.includes('image-container')) {
-            console.log("IMAGE");
-            form['e'+element] = $(this)[0].outerHTML;
-            element++
-
-        } else if(classes.includes('signature-container')) {
-            console.log("SIGNATURE");
-            form['e'+element] = $(this)[0].outerHTML;
-            element++
-
-        } 
-
-        }).get();
+    form['memo'] = $('#memo')[0].outerHTML;
 
     window.api.invoke('save_json', JSON.stringify(form))
         .then(function(res) {
@@ -748,3 +677,28 @@ function saveForm() {
     //console.log("SCRIPT: ", $("script"))
 }
 
+//------------------------------------------------------ UPLOAD FUNCTIONALITY ------------------------------------------------------//
+
+// Trigger file upload  
+$('#upload-button').click(function(){ $('#upload-input').trigger('click'); });
+
+function readJSON(event){
+    console.log(event)
+    var form = JSON.parse(event.target.result);
+    console.log(form)
+    console.log($("#type-selector"))//.attr("value", obj['type'])
+    $("#type-selector").val(form['type']).change();
+    $("#memo").replaceWith(form['memo'])
+    $("#location-selector").val(form['location']).change();
+    $("#proposal-header").replaceWith(form['header'])
+
+}
+
+document.getElementById('upload-input').addEventListener('change', (event) => {
+    console.log("UPLOADING")
+    var reader = new FileReader();
+    reader.onload = readJSON;
+    reader.readAsText(event.target.files[0])
+    console.log(event.target.files)
+
+});
