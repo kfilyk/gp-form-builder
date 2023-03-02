@@ -680,7 +680,7 @@ function saveForm() {
 //------------------------------------------------------ UPLOAD FUNCTIONALITY ------------------------------------------------------//
 
 // Trigger file upload  
-$('#upload-button').click(function(){ $('#upload-input').trigger('click'); });
+$('#load-button').click(function(){ $('#upload-input').trigger('click'); });
 
 function readJSON(event){
     console.log(event)
@@ -695,7 +695,7 @@ function readJSON(event){
 }
 
 document.getElementById('upload-input').addEventListener('change', (event) => {
-    console.log("UPLOADING")
+    console.log("LOADING JSON")
     var reader = new FileReader();
     reader.onload = readJSON;
     reader.readAsText(event.target.files[0])
