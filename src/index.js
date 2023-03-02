@@ -675,7 +675,7 @@ document.getElementById('upload-input').addEventListener('change', (event) => {
 var current = document.getElementById('pdf-button'); 
 
 current.addEventListener('click', (event) => {
-    window.api.invoke('download_pdf', [1,2,3])
+    window.api.invoke('download_pdf')
         .then(function(res) {
             console.log(res); // will print "This worked!" to the browser console
         })

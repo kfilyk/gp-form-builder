@@ -5,6 +5,7 @@ const path = require('path');
 const {ipcMain} = require('electron')
 const fs = require('fs');
 const { resolve } = require('path');
+const {dialog} = require('electron')
 
 function createWindow () {
     const win = new BrowserWindow({
@@ -61,41 +62,47 @@ var options = {
   pageSize: "A4",
 }
 
-ipcMain.handle('download_pdf', async (event, arg) => {
+ipcMain.handle('download_pdf', async (event) => {
+  const dialog_options = {
+    defaultPath: "form",
+    title: 'Save PDF',
+  }
 
-  return new Promise(function(resolve, reject) {
+  // getFocusedWindow() has to be called before opening the dialog, as the dialog interferes with the "focus" on the browser window
+  let win = BrowserWindow.getFocusedWindow();
+  console.log("WIN: ", win)
 
-    let win = BrowserWindow.getFocusedWindow();
-    // let win = RemoteBrowserWindow.getAllWindows()[0];
-  
-    win.webContents.printToPDF(options).then(data => {
-      fs.writeFile("./doc.pdf", data, function (err) {
-          if (err) {
-              console.log(err);
-              reject("PDF could not be generated: ", err)
-          } else {
-              console.log('PDF Generated Successfully');
-          }
-      });
-    }).catch(error => {
-        console.log(error)
-        reject("PDF could not be generated: ", error)
-
-    });
-    resolve("PDF Generated Successfully")
-  });  
+  await dialog.showSaveDialog(null, dialog_options).then((result) => {
+    return new Promise(function(resolve, reject) {
+      win.webContents.printToPDF(options).then(data => {
+        fs.writeFile(result['filePath']+".pdf", data, function (err) {
+            if (err) { reject("PDF could not be saved: ", err) }
+        });
+      }).catch(error => { reject("PDF could not be generated: ", error) });
+      resolve("PDF Generated Successfully")
+    }); 
+  });
 });
 
+
 ipcMain.handle('save_json', async (event, arg) => {
-  console.log("ARG: ", arg)
-  resolve("Save successful")
-  
-  fs.writeFile("../form.json", arg, function(err) {
-    if (err) {
-        console.log(err);
-    }
-  });
-  
+
+  const dialog_options = {
+    defaultPath: "form",
+    title: 'Save JSON',
+  }
+
+  await dialog.showSaveDialog(null, dialog_options).then((result) => {
+    return new Promise(function(resolve, reject) {
+
+      fs.writeFile(result['filePath']+".json", arg, function(err) {
+        if (err) {
+          reject("JSON could not be saved: ", err)
+        }
+      });
+      resolve("JSON Saved Successfully")
+    });
+  })
 });
 
 
