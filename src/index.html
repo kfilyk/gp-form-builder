@@ -16,10 +16,11 @@
     <body onload="initDocument()">
 
         <div id="parameters">
-            <button id="pdf-button" data-tooltip="Download As PDF"><img width="20px" src="./images/download.png"></button>
+            <button id="pdf-button" data-tooltip="Download PDF"><img width="20px" src="./images/download.png"></button>
+            <button id="print-button" data-tooltip="Print"><img width="20px" src="./images/print.png"></button>
             <button id="load-button" data-tooltip="Load JSON"><img width="20px" src="./images/load.png"></button>
-            <button id="save-button" onclick="saveForm()" data-tooltip="Save As JSON"><img width="20px" src="./images/diskette.png"></button>
-            <input id="upload-input" type="file" name="filename" style="display: none;"/>
+            <button id="save-button" onclick="saveForm()" data-tooltip="Save JSON"><img width="20px" src="./images/diskette.png"></button>
+            <input id="load-input" type="file" name="filename" style="display: none;"/>
 
             <select id="type-selector">
                 <option value="" hidden selected>Select Type...</option>
@@ -38,7 +39,7 @@
                     <img id="logo" src="./images/geopacific_logo.png">
                 </td>
                 <td colspan="50%" style="text-align:right;">
-                    <select id="location-selector" style="text-align:right;">
+                    <select id="location-selector" style="text-align:right;" onchange="changeLocation()">
                         <option value="" hidden selected>Select Location...</option>
                         <option value="(604)-439-0922 <br>geopacific.ca <br>1779 West Avenue Vancouver<br>Vancouver, B.C. V6P 6P2">Vancouver</option>
                         <option value="(604)-439-0922 <br>geopacific.ca <br>2nd Floor, 3351 Douglas Street<br>Victoria, B.C. V8Z 3L4">Victoria</option>

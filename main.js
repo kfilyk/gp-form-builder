@@ -21,7 +21,7 @@ function createWindow () {
     })
 
     win.loadFile(path.join(__dirname, './src/index.html'))
-    //win.webContents.openDevTools()
+    win.webContents.openDevTools()
 
 }
 app.setName('GP Builder');
@@ -45,7 +45,7 @@ app.on('window-all-closed', () => {
 
 //https://www.electronjs.org/docs/latest/api/web-contents#contentsprinttopdfoptions
 
-var options = {
+var pdf_options = {
   silent: false,
   printBackground: true,
   color: false,
@@ -74,7 +74,7 @@ ipcMain.handle('download_pdf', async (event) => {
 
   await dialog.showSaveDialog(null, dialog_options).then((result) => {
     return new Promise(function(resolve, reject) {
-      win.webContents.printToPDF(options).then(data => {
+      win.webContents.printToPDF(pdf_options).then(data => {
         fs.writeFile(result['filePath']+".pdf", data, function (err) {
             if (err) { reject("PDF could not be saved: ", err) }
         });
@@ -82,6 +82,33 @@ ipcMain.handle('download_pdf', async (event) => {
       resolve("PDF Generated Successfully")
     }); 
   });
+});
+
+var print_options = {
+  silent: false,
+  printBackground: true,
+  color: false,
+  margin: {
+      marginType: 'printableArea',
+      top: 0,
+  },
+  landscape: false,
+  pagesPerSheet: 1,
+  collate: false,
+  copies: 1,
+  displayHeaderFooter: true,
+  headerTemplate:'<span></span>',
+  pageSize: "A4",
+}
+
+ipcMain.handle('print', async (event) => {
+  let win = BrowserWindow.getFocusedWindow();
+  return new Promise(function(resolve, reject) {
+    win.webContents.print(print_options, (success, errorType) => {
+      if (!success) reject("Print failure: ", errorType)
+    })
+    resolve("Printed Successfully")
+  }); 
 });
 
 

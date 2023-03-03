@@ -27,9 +27,15 @@ $('#insert-selector').change(function(event) {
 }); 
 
 
-$('#location-selector').change(function(event) {
+function changeLocation() {
+    console.log("LOC FLAG")
     $('#location').html($('#location-selector').val());
+}
+
+/*
+$('#location-selector').change(function(event) {
 }); 
+*/
 
 $('#type-selector').change(function(event) {
 
@@ -638,10 +644,24 @@ function enableRiskSelectorListener() {
 
 //------------------------------------------------------ PDF FUNCTIONALITY ------------------------------------------------------//
 
-var current = document.getElementById('pdf-button'); 
+var pdf_button = document.getElementById('pdf-button'); 
 
-current.addEventListener('click', (event) => {
+pdf_button.addEventListener('click', (event) => {
     window.api.invoke('download_pdf')
+        .then(function(res) {
+            console.log(res); // will print "This worked!" to the browser console
+        })
+        .catch(function(err) {
+            console.error(err); // will print "This didn't work!" to the browser console.
+        });
+});
+
+//------------------------------------------------------ PRINT FUNCTIONALITY ------------------------------------------------------//
+
+var print_button = document.getElementById('print-button'); 
+
+print_button.addEventListener('click', (event) => {
+    window.api.invoke('print')
         .then(function(res) {
             console.log(res); // will print "This worked!" to the browser console
         })
@@ -662,8 +682,6 @@ function saveForm() {
     var location = document.getElementById("location-selector")
     form['location'] = location.options[location.selectedIndex].value
 
-    form['header'] = $('#proposal-header')[0].outerHTML;
-
     form['memo'] = $('#memo')[0].outerHTML;
 
     window.api.invoke('save_json', JSON.stringify(form))
@@ -677,10 +695,10 @@ function saveForm() {
     //console.log("SCRIPT: ", $("script"))
 }
 
-//------------------------------------------------------ UPLOAD FUNCTIONALITY ------------------------------------------------------//
+//------------------------------------------------------ LOAD FUNCTIONALITY ------------------------------------------------------//
 
-// Trigger file upload  
-$('#load-button').click(function(){ $('#upload-input').trigger('click'); });
+// Trigger file load  
+$('#load-button').click(function(){ $('#load-input').trigger('click'); });
 
 function readJSON(event){
     console.log(event)
@@ -690,15 +708,12 @@ function readJSON(event){
     $("#type-selector").val(form['type']).change();
     $("#memo").replaceWith(form['memo'])
     $("#location-selector").val(form['location']).change();
-    $("#proposal-header").replaceWith(form['header'])
-
 }
 
-document.getElementById('upload-input').addEventListener('change', (event) => {
+document.getElementById('load-input').addEventListener('change', (event) => {
     console.log("LOADING JSON")
     var reader = new FileReader();
     reader.onload = readJSON;
     reader.readAsText(event.target.files[0])
-    console.log(event.target.files)
-
+    //console.log(event.target.files)
 });
