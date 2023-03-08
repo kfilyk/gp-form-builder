@@ -12,13 +12,13 @@ $('#insert-selector').change(function(event) {
     if(val == "image") {
         insertImage()
     } else if(val == "table") {
-        insertTable()
+        insertTable(undefined, true, true)
     } else if(val == "section"){
         insertSection()
     } else if(val == "signature"){
         insertSignature()
     } else if(val == "remark"){
-        insertRemark("")
+        insertRemark()
     }else if(val == "selection"){
         insertSelection()
     }
@@ -57,83 +57,88 @@ $('#type-selector').change(function(event) {
     $('.review-container').remove()
     $('.remark-container').remove()
     $('.signature-container').remove()
-
+    $('#info div').hide()
 
     if($('#type-selector').val() == "PROPOSAL") {
-        $('#proposal-header').css({"display": "table-row"});
+        $('#info').css({"display": "table-row"});
         $('#proposal-title').html('<div contenteditable style="text-align: center;" placeholder="Re: Type of Report/Letter - Title of Report/Letter"></div><div contenteditable style="text-align: center;" placeholder="Address of Development/Project"></div>');
-        $('#file-r').css({"display": "block"});
-        $('#file-co').css({"display": "block"});
-        $('#file-prp').css({"display": "block"});
-        $('#file-memo').hide();
-        $('#client-name').css({"display": "block"});
-        $('#client-project-manager').hide();
-        $('#client-project').hide();
-        $('#risk-professional').hide();
-        $('#risk-firm').hide();
-        $('#risk-practice-number').hide();
+        $('#file-revision').show();
+        $('#file-co').show();
+        $('#file-prp').show();
+
+        $('#client-company-name').show();
+        $('#client-address').show();
+        $('#client-attention').show();
 
         $('#review-container').hide();
 
 
     } else if($('#type-selector').val() == "GEOTECHNICAL MEMORANDUM") {
-        $('#proposal-header').css({"display": "table-row"});
+        $('#info').css({"display": "table-row"});
         $('#proposal-title').html($('#type-selector').val());
 
-        $('#client-project').css({"display": "block"});
-        $('#client-project-manager').hide();
-        $('#client-name').hide();
-        $('#file-memo').css({"display": "block"});
-        $('#file-r').hide();
-        $('#file-co').hide();
-        $('#file-prp').hide();
-        $('#risk-professional').hide();
-        $('#risk-firm').hide();
-        $('#risk-practice-number').hide();
+        $('#client-company-name').show()
+        $('#client-project').show()
+        $('#client-address').show()
+
+        $('#date').show()
+        $('#file-number').show()
+        $('#file-memo').show()
         $('#review-container').css({"display": "table"});
 
         // insert memo containers
-        insertTable();
-        $("#t0").val("PURPOSE")
+        insertTable("");
+        delRow('t0')
         //console.log($("#t0 .row-0").children().toArray())
-        $("#t0 .row-0").children('th:nth-child(1)').html("TIME")
-        $("#t0 .row-0").children('th:nth-child(2)').html("WEATHER")
-        $("#t0 .row-0").children('th:nth-child(3)').html("MACHINERY/EQUIPTMENT ADJACENT TO EXCAVATION")
+        $("#t0 .row-0").children('th:nth-child(1)').html("TIME: <span contenteditable placeholder='00:00'></span>").attr('contenteditable','false');
+        $("#t0 .row-0").children('th:nth-child(2)').html("WEATHER: <span contenteditable placeholder='__________'></span>")
+        $("#t0 .row-0").children('th:nth-child(3)').html(`
+            MACHINERY/EQUIPTMENT ADJACENT TO EXCAVATION:
+            <select>
+                <option value="Y">YES</option>
+                <option value="N">NO</option>
+                <option value="NA">N/A</option>
+            </select>
+        `)
     
         insertSection();
-        $("#sh0").val("PURPOSE")
+        $("#sh0").html("PURPOSE").attr('contenteditable','false');
         insertSection();
-        $("#sh1").val("OBSERVATIONS")
+        $("#sh1").html("OBSERVATIONS").attr('contenteditable','false');
         insertSection();
-        $("#sh2").val("CONCLUSIONS & RECOMMENDATIONS")
+        $("#sh2").html("CONCLUSIONS & RECOMMENDATIONS").attr('contenteditable','false');
         insertImage();
     
     } else if($('#type-selector').val() == "RISK ASSESSMENT") {
-        $('#client-name').hide();
-        $('#file-number').hide();
-        $('#file-memo').hide();
-        $('#file-r').hide();
-        $('#file-co').hide();
-        $('#file-prp').hide();
-        $('#risk-professional').css({"display": "block"});
-        $('#risk-firm').css({"display": "block"});
-        $('#risk-practice-number').css({"display": "block"});
+        $('#info').css({"display": "table-row"});
 
-        $('#proposal-header').css({"display": "table-row"});
+        $('#client-re').show()
+        $('#client-project').show()
+        $('#client-project-manager').show()
+        $('#client-address').show()
+        $('#client-gpc').show()
+
+        $('#risk-professional').show()
+        $('#risk-firm').show()
+        $('#risk-firm-address').show()
+
+        $('#risk-practice-number').show()
+
         $('#proposal-title').html(`
-            <div contenteditable style="text-align: center;">
+            <div style="text-align: center;">
                 <select id="risk-selector">
                     <option>PROJECT-SPECIFIC</option>
                     <option>GLOBAL</option>
                     <option>ITERATIVE</option>
-                </select>RISK ASSESSMENT: 
+                </select>
+                <span> RISK ASSESSMENT: </span>
+                <span contenteditable placeholder="(ENTER PROJECT DESCRIPTION)"></span>
             </div>
             <div contenteditable style="text-align: center;" placeholder="Address of Development/Project"></div>`
         );
         enableRiskSelectorListener()
-        insertRemark("This (Temporary Shoring / Drill Test Pit) documented risk assessment is to be completed during preparation of design drawings, before proposing or accepting contracts. </br> Risk assessments must be filed in the project folder after client acceptance.");
-        insertTable();
-        $("#th0").html("Table 1. Considerations of Risk Assessment")
+        insertRemark("Risk assessments are to be completed during preparation of design drawings, before proposing or accepting contracts. </br> Risk assessments must be filed in the project folder after client acceptance.");
+        insertTable("Table 1. Considerations of Risk Assessment");
         delColumn('t0')
         addRow('t0')
         addRow('t0')
@@ -156,8 +161,17 @@ $('#type-selector').change(function(event) {
         $("#t0 .row-8").children('td:nth-child(1)').html("Hazard Identification Techniques Used")
         $("#t0 .row-9").children('td:nth-child(1)').html("Recommended Documents and Client Information")
 
-        insertTable();
-        $("#th1").html("Table 2. Risk Matrix")
+        $("#t0 .row-1").children('td:nth-child(2)').attr('contenteditable', 'true')
+        $("#t0 .row-2").children('td:nth-child(2)').attr('contenteditable', 'true')
+        $("#t0 .row-3").children('td:nth-child(2)').attr('contenteditable', 'true')
+        $("#t0 .row-4").children('td:nth-child(2)').attr('contenteditable', 'true')
+        $("#t0 .row-5").children('td:nth-child(2)').attr('contenteditable', 'true')
+        $("#t0 .row-6").children('td:nth-child(2)').attr('contenteditable', 'true')
+        $("#t0 .row-7").children('td:nth-child(2)').attr('contenteditable', 'true')
+        $("#t0 .row-8").children('td:nth-child(2)').attr('contenteditable', 'true')
+        $("#t0 .row-9").children('td:nth-child(2)').attr('contenteditable', 'true')
+
+        insertTable("Table 2. Risk Matrix");
         addRow('t1')
         addRow('t1')
         addRow('t1')
@@ -204,7 +218,7 @@ $('#type-selector').change(function(event) {
         $("#t1 .row-4").children('td:nth-child(5)').html("2/5").css("background-color", "greenyellow")
         $("#t1 .row-5").children('td:nth-child(5)').html("3/5").css("background-color", "yellow")
 
-        $("#t1 .row-0").children('th:nth-child(6)').html("Applicable?")
+        $("#t1 .row-0").children('th:nth-child(6)').html("Applicable")
         $("#t1 .row-1").children('td:nth-child(6)').html("<input type='checkbox'>")
         $("#t1 .row-2").children('td:nth-child(6)').html("<input type='checkbox'>")
         $("#t1 .row-3").children('td:nth-child(6)').html("<input type='checkbox'>")
@@ -212,8 +226,7 @@ $('#type-selector').change(function(event) {
         $("#t1 .row-5").children('td:nth-child(6)').html("<input type='checkbox'>")
 
 
-        insertTable();
-        $("#th2").html("Table 3. Mitigation Matrix")
+        insertTable("Table 3. Mitigation Matrix");
         addRow('t2')
         addRow('t2')
         addColumn('t2')
@@ -245,19 +258,91 @@ $('#type-selector').change(function(event) {
         $("#t2 .row-2").children('td:nth-child(4)').html("1/5").css("background-color", "lime")
         $("#t2 .row-3").children('td:nth-child(4)').html("2/5").css("background-color", "greenyellow")
 
-        $("#t2 .row-0").children('th:nth-child(5)').html("Applicable?")
+        $("#t2 .row-0").children('th:nth-child(5)').html("Applicable")
         $("#t2 .row-1").children('td:nth-child(5)').html("<input type='checkbox'>")
         $("#t2 .row-2").children('td:nth-child(5)').html("<input type='checkbox'>")
         $("#t2 .row-3").children('td:nth-child(5)').html("<input type='checkbox'>")
  
-            
         insertRemark("When drilling in areas where artesian conditions are known to exist, a review of the proposed drill depths / locations / proposed well screen lengths should be carried out by an appropriately qualified and experienced Professional Registrant and/or project manager. Although the submission of well construction reports to the Comptroller of Water Rights is not required for certain classes of wells (such as monitoring wells and temporary dewatering wells), if artesian conditions are encountered, then a well construction report must be submitted.")
 
         insertSelection({'title': "Independent Review Requirement"});
 
         insertSignature();
+    } else if ($('#type-selector').val() == "TRANSMITTAL") {
+        $('#info').css({"display": "table-row"});
+        $('#proposal-title').html($('#type-selector').val());
+        $('#client-address').show()
+        $('#client-attention').show()
+        $('#client-email').show()
+        $('#client-cc').show()
+
+        $('#date').show()
+        $('#info-from').show()
+        $('#info-signing-eng').show()
+        $('#file-number').show()
+
+        insertRemark("Please find the enclosed items. If you have any questions or require additional information, do not hesitate to contact us. Thank you.");
+
+        insertTable("", false, true);
+        addRow('t0')
+        addRow('t0')
+        addRow('t0')
+        addRow('t0')
+        addRow('t0')
+        addRow('t0')
+
+        $("#t0 .row-0").children('th:nth-child(1)').html("DRAWINGS")
+        $("#t0 .row-0").children('th:nth-child(2)').html("# OF COPIES")
+        $("#t0 .row-0").children('th:nth-child(3)').html("COMMENTS")
+
+        $("#t0 .row-2").children('td:nth-child(1)').html("LETTERS/REPORTS").css('font-weight', 'bold')
+        $("#t0 .row-2").children('td:nth-child(2)').html("# OF COPIES").css('font-weight', 'bold')
+        $("#t0 .row-2").children('td:nth-child(3)').html("COMMENTS").css('font-weight', 'bold')
+
+        $("#t0 .row-4").children('td:nth-child(1)').html("SCHEDULES").css('font-weight', 'bold')
+        $("#t0 .row-4").children('td:nth-child(2)').html("# OF COPIES").css('font-weight', 'bold')
+        $("#t0 .row-4").children('td:nth-child(3)').html("COMMENTS").css('font-weight', 'bold')
+
+        $("#t0 .row-6").children('td:nth-child(1)').html("OTHER").css('font-weight', 'bold')
+        $("#t0 .row-6").children('td:nth-child(2)').html("# OF COPIES").css('font-weight', 'bold')
+        $("#t0 .row-6").children('td:nth-child(3)').html("COMMENTS").css('font-weight', 'bold')
+
+    } else if ($('#type-selector').val() == "MEETING MINUTES") {
+        $('#info').css({"display": "table-row"});
+        $('#proposal-title').html($('#type-selector').val());
+        $('#date').show()
+        $('#file-number').show()
+        $('#file-revision').show()
+
+        // insert memo containers
+        insertTable("");
+        delRow('t0')
+        delColumn('t0')
+        $("#t0 .row-0").children('th:nth-child(1)').html("NOTE TAKER: <span contenteditable placeholder='__________'></span>")
+        $("#t0 .row-0").children('th:nth-child(2)').html("TIME: <span contenteditable placeholder='00:00'></span> - <span contenteditable placeholder='00:00'></span>")
+
+        insertTable("ATTENDIES", true, true);
+        addColumn('t1')
+        addColumn('t1')
+        addRow('t1')
+        addRow('t1')
+        addRow('t1')
+
+        $("#t1 .row-0").children('th:nth-child(1)').html("Company")
+        $("#t1 .row-0").children('th:nth-child(2)').html("Name")
+        $("#t1 .row-0").children('th:nth-child(3)').html("Email")
+        $("#t1 .row-0").children('th:nth-child(4)').html("Designation")
+        $("#t1 .row-0").children('th:nth-child(5)').html("Present")
+
+        insertTable("AGENDA ITEMS", true, true);
+        delColumn('t2')
+        addRow('t2')
+        addRow('t2')
+        $("#t2 .row-0").children('th:nth-child(1)').html("#")
+        $("#t2 .row-0").children('th:nth-child(2)').html("Topic")
+
     } else {
-        $('#proposal-header').hide();
+        $('#info').hide();
         $('#proposal-title').html($('#type-selector').val());
         $('#review-container').hide();
 
@@ -299,6 +384,7 @@ function insertImage() {
             <td colspan='100%'>
                 <button onclick=deleteImage(`+images+`)>x</button>
                 <div class="image-drop-area" id='i`+images+`'>Drop image here...</div>
+                <br>
                 <div style="text-align:center" contenteditable>Figure `+(images+1)+`</div>
             </td>
         </tr>
@@ -387,13 +473,17 @@ function deleteSection(id) {
 //------------------------------------------------------ SELECTION FUNCTIONALITY ------------------------------------------------------//
 
 function insertSelection(input) {
-    console.log("INSERTING SELECTION")
-    console.log("INPUT: ", input)
+    var ce_title = 'true';
+
+    if(input['title']) {
+        ce_title = 'false';
+    }
+
     $( "#memo" ).append(`
         <tr class="selection-container ui-sortable-handle" id=\'selc`+selections+`\'>
             <td colspan='100%' class='section'>
                 <button onclick=deleteSection(`+selections+`)>x</button>
-                <div contenteditable placeholder="Selection Header" class="selection-header" style= "font-weight:bold" id=selh`+selections+`>`+input['title']+`</div>
+                <div contenteditable=`+ce_title+` placeholder="Selection Header" class="selection-header" style= "font-weight:bold" id=selh`+selections+`>`+input['title']+`</div>
                 <table>
                     <tr>
                         <td>
@@ -477,7 +567,8 @@ function deleteSignature(id) {
 }
 
 //------------------------------------------------------ TABLE FUNCTIONALITY ------------------------------------------------------//
-function insertTable() {
+function insertTable(table_name="Table "+(tables+1), content_editable_title= false, content_editable= false) {
+
     $( "#memo" ).append(`
         <tr class="table-container ui-sortable-handle" id=\'table-container-`+tables+`\'>
             <td colspan='100%'>
@@ -486,8 +577,8 @@ function insertTable() {
                 Columns <button onclick= delColumn(\'t`+tables+`\') >-</button><button onclick= addColumn(\'t`+tables+`\') >+</button>
                 Rows <button onclick= delRow(\'t`+tables+`\') >-</button><button onclick= addRow(\'t`+tables+`\') >+</button>
                 </span>
-                <span style="text-align:center; font-weight: bold" contenteditable id = \'th`+tables+`\'>Table `+(tables+1)+`</span>
-                <table id = \'t`+tables+`\' class = 'content-table' contenteditable>
+                <span style="text-align:center; font-weight: bold" contenteditable=`+content_editable_title+` id = \'th`+tables+`\'>`+table_name+`</span>
+                <table id = \'t`+tables+`\' class = 'content-table' contenteditable=`+content_editable+`>
 
                     <tr class='row-0'> 
                         <th>&nbsp;</th>
@@ -580,12 +671,18 @@ function enableTab(id) {
 }
 
 //------------------------------------------------------ REMARK FUNCTIONALITY ------------------------------------------------------//
-function insertRemark(r) {
+function insertRemark(r="") {
+    var ce = 'true';
+
+    if(r!="") {
+        ce = 'false';
+    }
+
     $( "#memo" ).append(`
         <tr class="remark-container ui-sortable-handle" id=\'r`+remarks+`\'>
             <td colspan='100%' class='remark'>
                 <button onclick=deleteRemark(`+remarks+`)>x</button></br>
-                <div id = r`+remarks+` contenteditable style="text-align: center; border: 2px solid #000000; font-weight:bold">`+r+`</div>
+                <div id = r`+remarks+` contenteditable=`+ce+` style="text-align: center; border: 2px solid #000000; font-weight:bold">`+r+`</div>
 
             </td>
         </tr>
@@ -645,15 +742,15 @@ function enableRiskSelectorListener() {
 //------------------------------------------------------ PDF FUNCTIONALITY ------------------------------------------------------//
 
 var pdf_button = document.getElementById('pdf-button'); 
-
 pdf_button.addEventListener('click', (event) => {
-    window.api.invoke('download_pdf')
+    window.api.invoke('download_pdf', {'type': $('#type-selector').val().toLowerCase().split(' ').join('_')})
         .then(function(res) {
             console.log(res); // will print "This worked!" to the browser console
         })
         .catch(function(err) {
             console.error(err); // will print "This didn't work!" to the browser console.
         });
+    
 });
 
 //------------------------------------------------------ PRINT FUNCTIONALITY ------------------------------------------------------//
@@ -684,7 +781,7 @@ function saveForm() {
 
     form['memo'] = $('#memo')[0].outerHTML;
 
-    window.api.invoke('save_json', JSON.stringify(form))
+    window.api.invoke('save_json', {'json': JSON.stringify(form), 'type': $('#type-selector').val().toLowerCase().split(' ').join('_')})
         .then(function(res) {
             console.log(res); // will print "This worked!" to the browser console
         }).catch(function(err) {

@@ -28,7 +28,7 @@
                 <option value="TRANSMITTAL">Transmittal</option>
                 <option value="PROPOSAL">Proposal</option>
                 <option value="RISK ASSESSMENT">Risk Assessment</option>
-
+                <option value="MEETING MINUTES">Meeting Minutes</option>
             </select>
 
         </div>
@@ -53,31 +53,43 @@
                 </td>
             </tr>
 
-            <tr id="proposal-header">
-                <td id="proposal-header-left" colspan="50%">    
+            <tr id="info">
+                <td id="info-left" colspan="50%">   
+                    <div contenteditable id="client-re" placeholder="Re:"></div>
+
                     <!-- CLIENT -->
-                    <div contenteditable id="client-company-name" placeholder="Client Company Name" style="display:hidden"></div>
+                    <div contenteditable id="client-company-name" placeholder="Client Company Name"></div>
                     <div contenteditable id="client-project" placeholder="Project"></div>
                     <div contenteditable id="client-project-manager" placeholder="Project Manager"></div>
-                    <div contenteditable id="client-address" placeholder="Address"></div>
-                    <div contenteditable id="client-city" placeholder="City, Province/State"></div>
-                    <div contenteditable id="client-postal-code" placeholder="Postal Code"></div>
-                    </br>
-                    <div contenteditable id="client-name" placeholder="Attention: Client Name"></div>
+                    <div id="client-address">
+                        <span contenteditable placeholder="Address"></span><br>
+                        <span contenteditable placeholder="City, Province/State"></span><br>
+                        <span contenteditable  placeholder="Postal Code"></span>
+                    </div>
+                    <div id="client-email">Email To: <span contenteditable  placeholder="_______________"></span></div>
+                    <div id="client-cc">CC: <span contenteditable  placeholder="_______________"></span></div>
+                    <div id="client-gpc">GPC#: <span contenteditable  placeholder="#"></span></div>
+
+                    <div id="client-attention"></br>Attention: <span contenteditable  placeholder="_______________"></span></div>
+
                 </td>
-                <td id="proposal-header-right" colspan="50%">      
+                <td id="info-right" colspan="50%">      
                     <div contenteditable id='date'></div>
+                    <div id='info-from'>From: <span contenteditable placeholder="_______________"></span></div>
+                    <div id='info-signing-eng' contenteditable placeholder="Signing Engineer"></div>
+
                     <!-- FILE -->
-                    <div contenteditable id='file-number'>FILE#:</div>
-                    <div contenteditable id='file-prp'>PRP#:</div>
-                    <div contenteditable id='file-co'>CO#:</div>
-                    <div contenteditable id='file-r'>R0</div>
-                    <div contenteditable id='file-memo'>MEMO#: </div>
+                    <div id='file-number'>FILE#: <span contenteditable placeholder="###"></span></div>
+                    <div id='file-prp'>PRP#: <span contenteditable  placeholder="###"></span></div>
+                    <div id='file-co'>CO#: <span contenteditable  placeholder="###"></span></div>
+                    <div id='file-revision'>R<span contenteditable  placeholder="#"></span></div>
+                    <div id='file-memo'>MEMO#: <span contenteditable  placeholder="###"></span></div>
 
                     <!-- RISK -->
                     <div contenteditable id='risk-professional' placeholder="Name of Professional, Designation" style="font-weight: bold;"></div>
+                    <div contenteditable id='risk-practice-number' placeholder="Permit to Practice Number"></div>
                     <div contenteditable id='risk-firm' placeholder="Firm">GeoPacific Consultants Ltd.</div>
-                    <div contenteditable id='risk-practice-number' placeholder="Professional Practice Number"></div>
+                    <div contenteditable id='risk-firm-address' placeholder="Firm Address">1779 West 75th Avenue, Vancouver BC</div>
 
                 </td>
             </tr>
@@ -98,17 +110,15 @@
         <div id="footer">
             <table id="review-container">
                 <tr>
-                    <td>Reviewed By <input/></td>
-                    <td>Prepared By <input/></td>
+                    <td>Reviewed By <span contenteditable placeholder="Professional Engineer #1"></span></td>
+                    <td>Prepared By <span contenteditable placeholder="Professional Engineer #2"></span></td>
                 </tr>
                 <tr>
                     <td>Signed:<br/><br/><br/><br/><br/></td>
                     <td>Signed:<br/><br/><br/><br/><br/></td>
-                </tr>
-                <tr>
-                    <td colspan="100%" id="footer-label" style="text-align:center;"> CONSULTING GEOTECHNICAL ENGINEERS</td>
                 </tr>
             </table>
+            <div colspan="100%" id="footer-stamp" style="text-align:center;"> CONSULTING GEOTECHNICAL ENGINEERS</div>
         </div>
     </body>
     <script src="./index.js"></script>

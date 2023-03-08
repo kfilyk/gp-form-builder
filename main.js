@@ -63,9 +63,19 @@ var pdf_options = {
   pageSize: "A4",
 }
 
-ipcMain.handle('download_pdf', async (event) => {
+ipcMain.handle('download_pdf', async (event, args) => {
+  const date = new Date();
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
+  let year = date.getFullYear();
+  let currentDate = `${day}-${month}-${year}`;
+  let type = 'form';
+  if(args['type'] !== '') {
+    type = args['type']
+  }
+
   const dialog_options = {
-    defaultPath: "form",
+    defaultPath: type+"_"+currentDate,
     title: 'Save PDF',
   }
 
@@ -83,6 +93,7 @@ ipcMain.handle('download_pdf', async (event) => {
       resolve("PDF Generated Successfully")
     }); 
   });
+
 });
 
 var print_options = {
@@ -113,10 +124,19 @@ ipcMain.handle('print', async (event) => {
 });
 
 
-ipcMain.handle('save_json', async (event, arg) => {
+ipcMain.handle('save_json', async (event, args) => {
+  const date = new Date();
+  let day = date.getDate();
+  let month = date.getMonth() + 1;
+  let year = date.getFullYear();
+  let currentDate = `${day}-${month}-${year}`;
+  let type = 'form';
+  if(args['type'] !== '') {
+    type = args['type']
+  }
 
   const dialog_options = {
-    defaultPath: "form",
+    defaultPath: type+"-"+currentDate,
     title: 'Save JSON',
   }
 
